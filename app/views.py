@@ -1,6 +1,6 @@
 
 from flask import Blueprint #clase blueprint
-from flask import render_template # funcion render_template
+from flask import render_template, request # funcion render_template
 from form import LoginForm
 
 page = Blueprint("page", __name__)
@@ -14,8 +14,12 @@ def index():
     return render_template("index.html", title="Index")
 
 
-@page.route("/login")
+@page.route("/login", methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = LoginForm(request.form)
 
+    if request.method == 'POST':
+        print(form.username.data)
+        print(form.password.data)
+        print("Nueva sesión creada!")
     return render_template("auth/login.html", title="Login", form = form)
